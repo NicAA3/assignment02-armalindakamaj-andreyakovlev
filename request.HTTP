@@ -40,7 +40,7 @@ X-user-auth: {"username":"tester01","token":"8ec337707db84553b897cbd2b776ccf4"}
 ###Rooms-GET,POST, PUT and DELETE
 GET http://localhost:3000/api/rooms
 Content-Type: application/json
-X-user-auth: {"username":"tester01","token":"9550473f916d40926617063da5b47577"}
+X-user-auth: {"username":"tester01","token":"36f5e6324a27c0315032933d01265047"}
 
 ### 
 POST http://localhost:3000/api/room/new
