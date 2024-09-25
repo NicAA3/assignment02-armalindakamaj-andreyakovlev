@@ -4,7 +4,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /tests-examples
-.env
 /test-results
 /playwright-report
 /github
+/testTarget.ts
