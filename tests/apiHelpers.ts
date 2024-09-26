@@ -1,4 +1,4 @@
-import { APIRequest, APIRequestContext } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
 
 
 export class APIHelper {
@@ -15,7 +15,7 @@ export class APIHelper {
         this.PASSWORD = password;
     }
     async performLogin(request: APIRequestContext) {
-        const response = await request.post(`${this.BASE_URL}/api/login`, {
+        const response = await request.post(`${this.BASE_URL}/login`, {
             data: {
                 username: this.USERNAME,
                 password: this.PASSWORD,
@@ -34,7 +34,7 @@ export class APIHelper {
             token: this.token  // Example: Include token in the JSON          
         })
 
-        const response = await request.get(`${this.BASE_URL}/api/rooms`, {
+        const response = await request.get(`${this.BASE_URL}/rooms`, {
             headers: {
                 'x-user-auth': authPayload,
                 'Content-Type': 'application/json'
@@ -44,10 +44,10 @@ export class APIHelper {
     }
     async postNewRoom(request: APIRequestContext, payload: object) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,  // Assuming you want to include the username
+            username: this.USERNAME,
             token: this.token
         });
-        const response = await request.post(`${this.BASE_URL}/api/room/new`, {
+        const response = await request.post(`${this.BASE_URL}/room/new`, {
             headers: {
                 'x-user-auth': authPayload,  // Send authPayload as JSON string
                 'Content-Type': 'application/json',  // Specify content type
@@ -55,5 +55,51 @@ export class APIHelper {
             data: payload
         });
         return response;
+    }
+
+    async editRoom(request: APIRequestContext, payload: object) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token
+        });
+
+        const response = await request.put(`${this.BASE_URL}/room/2`, {
+            headers: {
+                'x-user-auth': authPayload,  // Auth as JSON string
+                'Content-Type': 'application/json',  // Ensure the payload is JSON
+            },
+            data: payload,
+        })
+        return response
+    }
+    async deleteRoom(request: APIRequestContext, roomId: number) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token
+        });
+
+        const response = await request.delete(`${this.BASE_URL}/room/${roomId}`, {
+            headers: {
+                'x-user-auth': authPayload,  // Auth as JSON string
+                'Content-Type': 'application/json',  // Ensure the payload is JSON
+            }
+
+        })
+        return response
+    }
+    async getAllClient(request: APIRequestContext) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token
+        });
+
+        const response = await request.get(`${this.BASE_URL}/clients`, {
+            headers: {
+                'x-user-auth': authPayload,  // Auth as JSON string
+                'Content-Type': 'application/json',  // Ensure the payload is JSON
+            }
+
+        })
+        return response
     }
 }
