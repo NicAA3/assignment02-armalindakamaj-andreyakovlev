@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { APIHelper } from './apiHelpers';
 import { BASE_URL, USERNAME, PASSWORD } from './testTarget';
-import exp from 'constants';
+import { generateRandomRoomsPayload } from './testData'
+import { features } from 'process';
 
 
 
@@ -53,7 +54,24 @@ test.describe('test suite 01', () => {
       ]
     });
   })
-});
+
+  test('Test case 03 - create room', async ({ request }) => {
+    const payload = generateRandomRoomsPayload();
+    const createPostResponse = await apiHelper.postNewRoom(request, payload);
+    expect(createPostResponse.ok()).toBeTruthy();
+    const responseData = await createPostResponse.json();
+    expect(responseData).toHaveProperty('id');  // Ensure room ID exists
+    expect(responseData).toMatchObject({
+      category: payload.category,
+      number: payload.number,
+      floor: payload.floor,
+      available: payload.available,
+      price: payload.price,
+      // features: payload.features,
+    });
+
+  });
+})
 
 
 
