@@ -6,7 +6,7 @@ export class APIHelper {
     private USERNAME: string;
     private PASSWORD: string;
     private user_username: string | null = null;
-    private token: string | null = null;
+    private token: string
 
 
     constructor(baseUrl: string, username: string, password: string) {
@@ -42,5 +42,18 @@ export class APIHelper {
         })
         return response
     }
-
+    async postNewRoom(request: APIRequestContext, payload: object) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,  // Assuming you want to include the username
+            token: this.token
+        });
+        const response = await request.post(`${this.BASE_URL}/api/room/new`, {
+            headers: {
+                'x-user-auth': authPayload,  // Send authPayload as JSON string
+                'Content-Type': 'application/json',  // Specify content type
+            },
+            data: payload
+        });
+        return response;
+    }
 }
