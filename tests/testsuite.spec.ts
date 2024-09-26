@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { APIHelper } from './apiHelpers';
 import { BASE_URL, USERNAME, PASSWORD } from './testTarget';
-import { generateRandomRoomsPayload } from './testData'
-import { features } from 'process';
+import { generateRandomRoomsPayload, generateEditRoomsPayload } from './testData'
+
 
 
 
@@ -19,7 +19,6 @@ test.describe('test suite 01', () => {
     expect(loginData).toHaveProperty('token');
 
   })
-
 
 
   test('Test case 01, loga in', async ({ request }) => {
@@ -70,8 +69,39 @@ test.describe('test suite 01', () => {
       // features: payload.features,
     });
 
+  })
+
+  test('Test case 04 - Edit room 2', async ({ request }) => {
+    const payload = generateEditRoomsPayload();
+    const createPostResponse = await apiHelper.editRoom(request, payload);
+    expect(createPostResponse.ok()).toBeTruthy();
+    const responseData = await createPostResponse.json();
+    expect(responseData).toMatchObject({
+      category: 'Test category',
+      number: payload.number,
+      floor: payload.floor,
+      available: payload.available,
+      price: payload.price,
+      features: 'test',
+    });
+
+  })
+
+  test('Test case 05 - Delete room', async ({ request }) => {
+    const getAllRoom = await apiHelper.getAllRooms(request);
+    expect(getAllRoom.ok()).toBeTruthy();
+    const getRoom = await getAllRoom.json();
+    expect(getRoom.length).toBeGreaterThan(1);
+    const lastButOneID = getRoom[getRoom.length - 2].id;
+    const deleteRequest = await apiHelper.deleteRoom(request, lastButOneID);
+    expect(deleteRequest.ok()).toBeTruthy();
+
+  })
+  test('Test case 06 - Get Client', async ({ request }) => {
+    const getClient = await apiHelper.getAllClient(request);
+    expect(getClient.ok()).toBeTruthy();
+
   });
 })
-
 
 

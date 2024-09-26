@@ -10,7 +10,15 @@ export const generateRandomRoomsPayload = () => {
         "features": faker.helpers.arrayElements(['Balcony', 'Ensuite', 'Sea View', 'Penthouse']),
 
     }
+};
 
-
-
+export const generateEditRoomsPayload = () => {
+    return {
+        "category": 'Test category',
+        "number": faker.number.int({ min: 1, max: 100 }),
+        "floor": faker.number.int({ min: 1, max: 10 }),
+        "available": true,
+        "price": faker.number.int({ min: 50, max: 500 }),
+        "features": 'test'
+    }
 }
