@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { APIHelper } from './apiHelpers';
 import { BASE_URL, USERNAME, PASSWORD } from './testTarget';
-import { generateRandomRoomsPayload, generateEditRoomsPayload } from './testData'
+import { generateRandomRoomsPayload, generateEditRoomsPayload, generateRandomClientsPayload } from './testData'
 
 
 
@@ -52,7 +52,7 @@ test.describe('test suite 01', () => {
         "ensuite"
       ]
     });
-  })
+  });
 
   test('Test case 03 - create room', async ({ request }) => {
     const payload = generateRandomRoomsPayload();
@@ -69,7 +69,7 @@ test.describe('test suite 01', () => {
       // features: payload.features,
     });
 
-  })
+  });
 
   test('Test case 04 - Edit room 2', async ({ request }) => {
     const payload = generateEditRoomsPayload();
@@ -85,7 +85,7 @@ test.describe('test suite 01', () => {
       features: 'test',
     });
 
-  })
+  });
 
   test('Test case 05 - Delete room', async ({ request }) => {
     const getAllRoom = await apiHelper.getAllRooms(request);
@@ -96,12 +96,38 @@ test.describe('test suite 01', () => {
     const deleteRequest = await apiHelper.deleteRoom(request, lastButOneID);
     expect(deleteRequest.ok()).toBeTruthy();
 
-  })
-  test('Test case 06 - Get Client', async ({ request }) => {
-    const getClient = await apiHelper.getAllClient(request);
-    expect(getClient.ok()).toBeTruthy();
+  });
+  test('Test case 06 - Create Client', async ({ request }) => {
+    const payload = generateRandomClientsPayload();
+    const createPostResponse = await apiHelper.postNewClient(request, payload);
+    expect(createPostResponse.ok()).toBeTruthy();
+    const responseData = await createPostResponse.json();
+    expect(responseData).toHaveProperty('id');  // Ensure client ID exists
+    expect(responseData).toMatchObject({
+      name: payload.name,
+      email: payload.email,
+      telephone: payload.telephone
+    });
+  });
+
+  
+
+
+  test('Test case 10 - Get All Clients', async ({ request }) => {
+    const clientsRespons = await apiHelper.getAllClient(request);
+    expect(clientsRespons.ok()).toBeTruthy();
+    const clientsData = await clientsRespons.json();
+    expect(clientsData.length).toBeGreaterThan(0);
+    expect(clientsData[0]).toMatchObject({
+      "id": 1,
+      "created": "2020-01-05T12:00:00.000Z",
+      "name": "Jonas Hellman",
+      "email": "jonas.hellman@example.com",
+      "telephone": "070 000 0001"
+  });
 
   });
 })
+
 
 

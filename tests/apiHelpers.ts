@@ -102,4 +102,19 @@ export class APIHelper {
         })
         return response
     }
+
+    async postNewClient(request: APIRequestContext, payload: object) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token
+        });
+        const response = await request.post(`${this.BASE_URL}/client/new`, {
+            headers: {
+                'x-user-auth': authPayload,  // Send authPayload as JSON string
+                'Content-Type': 'application/json',  // Specify content type
+            },
+            data: payload
+        });
+        return response;
+    }
 }

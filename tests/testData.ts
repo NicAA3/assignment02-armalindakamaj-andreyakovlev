@@ -21,4 +21,12 @@ export const generateEditRoomsPayload = () => {
         "price": faker.number.int({ min: 50, max: 500 }),
         "features": 'test'
     }
+};
+
+export const generateRandomClientsPayload = () => {
+    return {
+        "name": faker.person.fullName(),
+        "email": faker.internet.email(),
+        "telephone": faker.phone.number(),
+    }
 }
