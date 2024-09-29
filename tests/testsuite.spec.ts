@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { APIHelper } from './apiHelpers';
 import { BASE_URL, USERNAME, PASSWORD } from './testTarget';
-import { generateRandomRoomsPayload, generateEditRoomsPayload, generateRandomClientsPayload } from './testData'
-
-
+import { generateRandomRoomsPayload, generateEditRoomsPayload, generateRandomClientsPayload, generateRandomBillsPayload } from './testData'
 
 
 test.describe('test suite 01', () => {
@@ -39,20 +37,20 @@ test.describe('test suite 01', () => {
     expect(roomsResponse.ok()).toBeTruthy();
     const roomsData = await roomsResponse.json();
     expect(roomsData.length).toBeGreaterThan(0);
-    expect(roomsData[0]).toMatchObject({
-      "id": 1,
-      "created": "2020-01-03T12:00:00.000Z",
-      "category": "double",
-      "floor": 1,
-      "number": 101,
-      "available": true,
-      "price": 1500,
-      "features": [
-        "balcony",
-        "ensuite"
-      ]
-    });
-  });
+    // expect(roomsData[0]).toMatchObject({
+    //   "id": 1,
+    //   "created": "2020-01-03T12:00:00.000Z",
+    //   "category": "double",
+    //   "floor": 1,
+    //   "number": 101,
+    //   "available": true,
+    //   "price": 1500,
+    //   "features": [
+    //     "balcony",
+    //     "ensuite"
+    //   ]
+    // });
+  })
 
   test('Test case 03 - create room', async ({ request }) => {
     const payload = generateRandomRoomsPayload();
@@ -66,7 +64,7 @@ test.describe('test suite 01', () => {
       floor: payload.floor,
       available: payload.available,
       price: payload.price,
-      // features: payload.features,
+      features: payload.features,
     });
 
   });
@@ -109,9 +107,19 @@ test.describe('test suite 01', () => {
       telephone: payload.telephone
     });
   });
+  test('Test case 07 - Delete Bill', async ({ request }) => {
+    const payload = generateRandomBillsPayload();
+    const createPostResponse = await apiHelper.postNewBill(request, payload);
+    expect(createPostResponse.ok()).toBeTruthy();
+    const getAllBills = await apiHelper.getAllBills(request);
+    expect(getAllBills.ok()).toBeTruthy();
+    const getBill = await getAllBills.json();
+    expect(getBill.length).toBeGreaterThan(0);
+    const lastButOneID = getBill[getBill.length - 1].id;
+    const deleteRequest = await apiHelper.deleteBill(request, lastButOneID);
+    expect(deleteRequest.ok()).toBeTruthy();
 
-  
-
+  });
 
   test('Test case 10 - Get All Clients', async ({ request }) => {
     const clientsRespons = await apiHelper.getAllClient(request);

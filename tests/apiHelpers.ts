@@ -63,7 +63,7 @@ export class APIHelper {
             token: this.token
         });
 
-        const response = await request.put(`${this.BASE_URL}/room/2`, {
+        const response = await request.put(`${this.BASE_URL}/room/1`, {
             headers: {
                 'x-user-auth': authPayload,  // Auth as JSON string
                 'Content-Type': 'application/json',  // Ensure the payload is JSON
@@ -116,5 +116,51 @@ export class APIHelper {
             data: payload
         });
         return response;
+    }
+
+    async postNewBill(request: APIRequestContext, payload: object) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token
+        });
+        const response = await request.post(`${this.BASE_URL}/bill/new`, {
+            headers: {
+                'x-user-auth': authPayload,  // Send authPayload as JSON string
+                'Content-Type': 'application/json',  // Specify content type
+            },
+            data: payload
+        });
+        return response;
+    }
+
+    async getAllBills(request: APIRequestContext) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token         
+        })
+
+        const response = await request.get(`${this.BASE_URL}/bills`, {
+            headers: {
+                'x-user-auth': authPayload,
+                'Content-Type': 'application/json'
+            }
+        })
+        return response
+    }
+
+    async deleteBill(request: APIRequestContext, billId: number) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token
+        });
+
+        const response = await request.delete(`${this.BASE_URL}/bill/${billId}`, {
+            headers: {
+                'x-user-auth': authPayload,
+                'Content-Type': 'application/json', 
+            }
+
+        })
+        return response
     }
 }
