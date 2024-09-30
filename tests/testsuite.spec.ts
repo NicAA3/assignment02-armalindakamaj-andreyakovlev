@@ -86,11 +86,13 @@ test.describe('test suite 01', () => {
   });
 
   test('Test case 05 - Delete room', async ({ request }) => {
-    const getAllRoom = await apiHelper.getAllRooms(request);
-    expect(getAllRoom.ok()).toBeTruthy();
-    const getRoom = await getAllRoom.json();
-    expect(getRoom.length).toBeGreaterThan(1);
-    const lastButOneID = getRoom[getRoom.length - 1].id;
+    const payload = generateRandomRoomsPayload();
+    const createPostResponse = await apiHelper.postNewRoom(request, payload);
+    expect(createPostResponse.ok()).toBeTruthy();
+    const getAllRooms = await apiHelper.getAllRooms(request);
+    expect(getAllRooms.ok()).toBeTruthy();
+    const getRoom = await getAllRooms.json();
+    const lastButOneID = getRoom[getRoom.length - 2].id;
     const deleteRequest = await apiHelper.deleteRoom(request, lastButOneID);
     expect(deleteRequest.ok()).toBeTruthy();
 
@@ -127,8 +129,7 @@ test.describe('test suite 01', () => {
     const getAllBills = await apiHelper.getAllBills(request);
     expect(getAllBills.ok()).toBeTruthy();
     const getBill = await getAllBills.json();
-    expect(getBill.length).toBeGreaterThan(0);
-    const lastButOneID = getBill[getBill.length - 1].id;
+    const lastButOneID = getBill[getBill.length - 2].id;
     const deleteRequest = await apiHelper.deleteBill(request, lastButOneID);
     expect(deleteRequest.ok()).toBeTruthy();
 
