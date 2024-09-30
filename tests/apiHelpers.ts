@@ -3,22 +3,22 @@ import { APIRequestContext } from "@playwright/test";
 
 export class APIHelper {
     private BASE_URL: string;
-    private USERNAME: string;
-    private PASSWORD: string;
+    private TEST_USERNAME: string;
+    private TEST_PASSWORD: string;
     private user_username: string | null = null;
     private token: string
 
 
     constructor(baseUrl: string, username: string, password: string) {
         this.BASE_URL = baseUrl;
-        this.USERNAME = username;
-        this.PASSWORD = password;
+        this.TEST_USERNAME = username;
+        this.TEST_PASSWORD = password;
     }
     async performLogin(request: APIRequestContext) {
         const response = await request.post(`${this.BASE_URL}/login`, {
             data: {
-                username: this.USERNAME,
-                password: this.PASSWORD,
+                username: this.TEST_USERNAME,
+                password: this.TEST_PASSWORD,
             }
         })
         const responseData = await response.json();
@@ -30,7 +30,7 @@ export class APIHelper {
     }
     async getAllRooms(request: APIRequestContext) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token  // Example: Include token in the JSON          
         })
 
@@ -44,7 +44,7 @@ export class APIHelper {
     }
     async postNewRoom(request: APIRequestContext, payload: object) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
         const response = await request.post(`${this.BASE_URL}/room/new`, {
@@ -59,7 +59,7 @@ export class APIHelper {
 
     async editRoom(request: APIRequestContext, payload: object) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
 
@@ -74,7 +74,7 @@ export class APIHelper {
     }
     async deleteRoom(request: APIRequestContext, roomId: number) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
 
@@ -89,7 +89,7 @@ export class APIHelper {
     }
     async getAllClient(request: APIRequestContext) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
 
