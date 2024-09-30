@@ -1,7 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { APIHelper } from './apiHelpers';
-import { BASE_URL, USERNAME, PASSWORD } from './testTarget';
+
+import { BASE_URL } from './testTarge
+
 import { generateRandomRoomsPayload, generateEditRoomsPayload, generateRandomClientsPayload, generateRandomBillsPayload } from './testData'
+
+
 
 
 test.describe('test suite 01', () => {
@@ -9,11 +13,12 @@ test.describe('test suite 01', () => {
 
 
   test.beforeAll(async ({ request }) => {
-    apiHelper = new APIHelper(BASE_URL, USERNAME, PASSWORD);
+    apiHelper = new APIHelper(BASE_URL, `${process.env.TEST_USERNAME}`, `${process.env.TEST_PASSWORD}`);
+    console.log(`${process.env.TEST_PASSWORD}`)
     const loginResponse = await apiHelper.performLogin(request);
     expect(loginResponse.ok()).toBeTruthy();
     const loginData = await loginResponse.json();
-    expect(loginData).toHaveProperty('username', USERNAME);
+    expect(loginData).toHaveProperty('username', `${process.env.TEST_USERNAME}`);
     expect(loginData).toHaveProperty('token');
 
   })
@@ -26,7 +31,7 @@ test.describe('test suite 01', () => {
     expect(loginResponse.ok()).toBeTruthy();
     // Verify that the token and username exist in the response
     expect(loginData).toMatchObject({
-      username: USERNAME,
+      username: `${process.env.TEST_USERNAME}`,
       token: expect.any(String),
     });
 

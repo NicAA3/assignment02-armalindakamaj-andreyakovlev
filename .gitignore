@@ -7,6 +7,6 @@ node_modules/
 /test-results
 /playwright-report
 /github
-tests/testTarget.ts
-tests/example.spec.ts
+
 .env
+request.HTTP
