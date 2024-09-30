@@ -63,7 +63,7 @@ export class APIHelper {
             token: this.token
         });
 
-        const response = await request.put(`${this.BASE_URL}/room/1`, {
+        const response = await request.put(`${this.BASE_URL}/room/2`, {
             headers: {
                 'x-user-auth': authPayload,  // Auth as JSON string
                 'Content-Type': 'application/json',  // Ensure the payload is JSON

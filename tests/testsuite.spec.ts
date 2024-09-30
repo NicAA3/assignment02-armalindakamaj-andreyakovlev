@@ -37,19 +37,19 @@ test.describe('test suite 01', () => {
     expect(roomsResponse.ok()).toBeTruthy();
     const roomsData = await roomsResponse.json();
     expect(roomsData.length).toBeGreaterThan(0);
-    // expect(roomsData[0]).toMatchObject({
-    //   "id": 1,
-    //   "created": "2020-01-03T12:00:00.000Z",
-    //   "category": "double",
-    //   "floor": 1,
-    //   "number": 101,
-    //   "available": true,
-    //   "price": 1500,
-    //   "features": [
-    //     "balcony",
-    //     "ensuite"
-    //   ]
-    // });
+    expect(roomsData[0]).toMatchObject({
+      "id": 1,
+      "created": "2020-01-03T12:00:00.000Z",
+      "category": "double",
+      "floor": 1,
+      "number": 101,
+      "available": true,
+      "price": 1500,
+      "features": [
+        "balcony",
+        "ensuite"
+      ]
+    });
   })
 
   test('Test case 03 - create room', async ({ request }) => {
@@ -90,7 +90,7 @@ test.describe('test suite 01', () => {
     expect(getAllRoom.ok()).toBeTruthy();
     const getRoom = await getAllRoom.json();
     expect(getRoom.length).toBeGreaterThan(1);
-    const lastButOneID = getRoom[getRoom.length - 2].id;
+    const lastButOneID = getRoom[getRoom.length - 1].id;
     const deleteRequest = await apiHelper.deleteRoom(request, lastButOneID);
     expect(deleteRequest.ok()).toBeTruthy();
 
@@ -107,7 +107,20 @@ test.describe('test suite 01', () => {
       telephone: payload.telephone
     });
   });
-  test('Test case 07 - Delete Bill', async ({ request }) => {
+
+  test('Test case 07 - Create Bill', async ({ request }) => {
+    const payload = generateRandomBillsPayload();
+    const createPostResponse = await apiHelper.postNewBill(request, payload);
+    expect(createPostResponse.ok()).toBeTruthy();
+    const responseData = await createPostResponse.json();
+    expect(responseData).toHaveProperty('id');  // Ensure client ID exists
+    expect(responseData).toMatchObject({
+      value: payload.value,
+      paid: payload.paid
+    });
+  });
+
+  test('Test case 08 - Delete Bill', async ({ request }) => {
     const payload = generateRandomBillsPayload();
     const createPostResponse = await apiHelper.postNewBill(request, payload);
     expect(createPostResponse.ok()).toBeTruthy();
