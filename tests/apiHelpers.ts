@@ -105,7 +105,7 @@ export class APIHelper {
 
     async postNewClient(request: APIRequestContext, payload: object) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
         const response = await request.post(`${this.BASE_URL}/client/new`, {
@@ -120,7 +120,7 @@ export class APIHelper {
 
     async postNewBill(request: APIRequestContext, payload: object) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
         const response = await request.post(`${this.BASE_URL}/bill/new`, {
@@ -135,7 +135,7 @@ export class APIHelper {
 
     async getAllBills(request: APIRequestContext) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token         
         })
 
@@ -150,7 +150,7 @@ export class APIHelper {
 
     async deleteBill(request: APIRequestContext, billId: number) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token
         });
 
@@ -165,7 +165,7 @@ export class APIHelper {
     }
     async getAllReservations(request: APIRequestContext) {
         const authPayload = JSON.stringify({
-            username: this.USERNAME,
+            username: this.TEST_USERNAME,
             token: this.token  // Example: Include token in the JSON          
         })
 
