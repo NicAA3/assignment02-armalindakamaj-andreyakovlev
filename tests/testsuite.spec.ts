@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { APIHelper } from './apiHelpers';
-
-import { BASE_URL } from './testTarge
-
+import { BASE_URL } from './testTarget'
 import { generateRandomRoomsPayload, generateEditRoomsPayload, generateRandomClientsPayload, generateRandomBillsPayload } from './testData'
 
 
