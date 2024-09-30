@@ -163,4 +163,18 @@ export class APIHelper {
         })
         return response
     }
+    async getAllReservations(request: APIRequestContext) {
+        const authPayload = JSON.stringify({
+            username: this.USERNAME,
+            token: this.token  // Example: Include token in the JSON          
+        })
+
+        const response = await request.get(`${this.BASE_URL}/reservations`, {
+            headers: {
+                'x-user-auth': authPayload,
+                'Content-Type': 'application/json'
+            }
+        })
+        return response
+    }
 }

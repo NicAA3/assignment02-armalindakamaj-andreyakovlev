@@ -135,6 +135,23 @@ test.describe('test suite 01', () => {
 
   });
 
+  test('Test case 09 - Get All Reservations', async ({ request }) => {
+    const reservationsRespons = await apiHelper.getAllReservations(request);
+    expect(reservationsRespons.ok()).toBeTruthy();
+    const reservationsData = await reservationsRespons.json();
+    expect(reservationsData.length).toBeGreaterThan(0);
+    expect(reservationsData[0]).toMatchObject({
+      "id": 1,
+      "created": "2020-01-10T12:00:00.000Z",
+      "start": "2020-04-01",
+      "end": "2020-04-04",
+      "client": 1,
+      "room": 1,
+      "bill": 1
+  });
+
+  });
+
   test('Test case 10 - Get All Clients', async ({ request }) => {
     const clientsRespons = await apiHelper.getAllClient(request);
     expect(clientsRespons.ok()).toBeTruthy();

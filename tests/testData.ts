@@ -38,3 +38,13 @@ export const generateRandomBillsPayload = () => {
         "paid": faker.datatype.boolean()
     }
 };
+
+export const generateRandomReservationPayload = () => {
+    return {
+        "Start": faker.date.soon({ days: 10 }).toISOString().split('T')[0],
+        "End": faker.date.soon({ days: 4, }).toISOString().split('T')[0],
+        "Client": faker.person.fullName(),
+        "Room": faker.number.int({ min: 1, max: 500 }),
+        "Bill": faker.number.int({ min: 1, max: 1000 })
+    }
+}
